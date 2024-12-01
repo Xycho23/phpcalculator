@@ -1,3 +1,65 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['questions'])) {
+    $_SESSION['questions'] = [];
+    $_SESSION['score'] = 0;
+    $_SESSION['current_question'] = 0;
+    $_SESSION['total_questions'] = 10;
+    $_SESSION['level'] = '1-10';
+    $_SESSION['operator'] = 'add';
+}
+
+// Generate current question if the quiz is ongoing
+if ($_SESSION['current_question'] < $_SESSION['total_questions']) {
+    list($min, $max) = explode('-', $_SESSION['level']);
+    $num1 = rand($min, $max);
+    $num2 = rand($min, $max);
+
+    // Ensure num2 is not zero to avoid division by zero errors
+    while ($num2 == 0) {
+        $num2 = rand($min, $max);
+    }
+
+    switch ($_SESSION['operator']) {
+        case 'add':
+            $correctAnswer = $num1 + $num2;
+            $operatorSymbol = '+';
+            break;
+        case 'sub':
+            $correctAnswer = $num1 - $num2;
+            $operatorSymbol = '-';
+            break;
+        case 'mul':
+            $correctAnswer = $num1 * $num2;
+            $operatorSymbol = '×';
+            break;
+        case 'div':
+            $correctAnswer = round($num1 / $num2, 2);
+            $operatorSymbol = '÷';
+            break;
+    }
+
+    // Generate multiple choices
+    $choices = [$correctAnswer];
+    while (count($choices) < 4) {
+        $rand = round(rand($correctAnswer - 10, $correctAnswer + 10), 2);
+        if (!in_array($rand, $choices) && $rand >= 0) {
+            $choices[] = $rand;
+        }
+    }
+    shuffle($choices);
+
+    $_SESSION['questions'][] = [
+        'num1' => $num1,
+        'num2' => $num2,
+        'operator' => $operatorSymbol,
+        'correctAnswer' => $correctAnswer,
+        'choices' => $choices,
+    ];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +175,7 @@
                         <option value="1-10" <?php echo $_SESSION['level'] == '1-10' ? 'selected' : ''; ?>>Level 1 (1-10)</option>
                         <option value="11-100" <?php echo $_SESSION['level'] == '11-100' ? 'selected' : ''; ?>>Level 2 (11-100)</option>
                         <option value="101-1000" <?php echo $_SESSION['level'] == '101-1000'? 'selected' : '';?>>Level 3 (101-1000)</option>
-
+                        
                     </select>
                 </label>
                 <label>
