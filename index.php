@@ -172,9 +172,9 @@ if ($_SESSION['current_question'] < $_SESSION['total_questions']) {
                 <label>
                     Level:
                     <select name="level">
-                        <option value="1-10" <?php echo $_SESSION['level'] == '1-10' ? 'selected' : ''; ?>>Level 1 (1-10)</option>
-                        <option value="11-100" <?php echo $_SESSION['level'] == '11-100' ? 'selected' : ''; ?>>Level 2 (11-100)</option>
-                        <option value="101-1000" <?php echo $_SESSION['level'] == '101-1000'? 'selected' : '';?>>Level 3 (101-1000)</option>
+                        <option value="1-10" <?php echo $_SESSION['level'] == '1-50' ? 'selected' : ''; ?>>EASY (1-50)</option>
+                        <option value="11-100" <?php echo $_SESSION['level'] == '51-100' ? 'selected' : ''; ?>>MEDIUM (51-100)</option>
+                        <option value="101-1000" <?php echo $_SESSION['level'] == '101-1000'? 'selected' : '';?>>HARD (101-1000)</option>
                         
                     </select>
                 </label>
