@@ -13,13 +13,13 @@ if (isset($_POST['update_settings'])) {
 }
 
 if (isset($_POST['answer'])) {
-    // Check the answer
+    // Check answer and update score or move to next question
     $currentQuestion = $_SESSION['questions'][$_SESSION['current_question']];
     if ((int)$_POST['answer'] === $currentQuestion['correctAnswer']) {
         $_SESSION['score']++;
     }
 
-    // Move to the next question
+    
     $_SESSION['current_question']++;
     header('Location: index.php');
     exit;
